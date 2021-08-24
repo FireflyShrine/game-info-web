@@ -1,4 +1,4 @@
-import { Container, Title } from "./styles";
+import { Button, Container, Title } from "./styles";
 
 function Login() {
   return (
@@ -9,7 +9,7 @@ function Login() {
         <input type="text" placeholder="exemple@gmail.com" />
         <label>Senha:</label>
         <input type="password" placeholder="*********" />
-        <button>Logar</button>
+        <Button bg="">Logar</Button>
       </form>
     </Container>
   );

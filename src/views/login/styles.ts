@@ -15,4 +15,11 @@ export const Container = styled.div`
 export const Title = styled.h1`
   color: #fff;
   font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+`;
+
+export const Button = styled.button<{bg: string}>`
+  color: #fff;
+  background: ${({bg}) => bg ? bg : "	#FFFF00"};
+  border: none;
 `;
