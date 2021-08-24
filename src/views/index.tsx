@@ -1,7 +1,7 @@
 function Home() {
   return (
     <div>
-      <h1>Lading Page</h1>
+      <h1>Lading Page - TESTE</h1>
     </div>
   );
 }
