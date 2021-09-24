@@ -1,34 +1,29 @@
-import React from 'react';
-import {Container , Cabecalho , Corpo , Rodape , Botao, Title, Login, Input, Frase , Box , Paragrafo } from './style'
-import { FiArrowRight } from 'react-icons/fi';
+import React from "react";
+import { FiArrowRight } from "react-icons/fi";
+
+import * as S from "./style";
 function Home() {
   return (
-    <Container>
-     <Cabecalho>
-       <Title>Game Info</Title>
-       <Input type="text" placeholder="Search"/>
-       <Login href="">Log In</Login>
-     </Cabecalho>
-      <Corpo>
-        <Box>
-          <Frase>
-            Seach for a game. Get details.
-          </Frase>
-        </Box>
+    <S.Container>
+      <S.Header>
+        <S.Title>Game Info</S.Title>
+        <S.Input type="text" placeholder="Search" />
+        <S.Login href="">Log In</S.Login>
+      </S.Header>
+      <S.Corpo>
+        <S.Box>
+          <S.Frase>Seach for a game. Get details.</S.Frase>
+        </S.Box>
 
-        <Botao>
-         <p>Read docs</p>
-        <FiArrowRight size={40}/>
-        </Botao>
-      </Corpo>
-      <Rodape>
-        <Paragrafo>
-          
-          Game Info © - 2021. Alguns direitos reservados
-
-        </Paragrafo>
-      </Rodape>
-    </Container>
+        <S.Botao>
+          <p>Read docs</p>
+          <FiArrowRight size={40} />
+        </S.Botao>
+      </S.Corpo>
+      <S.Rodape>
+        <S.Paragrafo>Game Info © - 2021. Alguns direitos reservados</S.Paragrafo>
+      </S.Rodape>
+    </S.Container>
   );
 }
 
