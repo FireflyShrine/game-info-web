@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useState,
 } from 'react'
+import Image from 'next/image'
 import { useField } from '@unform/core'
 import { Input, InputProps } from '@chakra-ui/input'
 import { Box, Flex } from '@chakra-ui/layout'
@@ -62,11 +63,10 @@ export default function InputFile({ name, ...rest }: Props) {
         Clique para enviar sua foto
       </Flex>
       {preview && (
-        <img
+        <Image
           src={preview}
           alt="Preview"
           width="200px"
-          style={{ marginTop: '10px' }}
         />
       )}
       <Input
