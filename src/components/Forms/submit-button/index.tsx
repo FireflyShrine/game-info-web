@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from "@chakra-ui/react";
-import { WithChildren } from "../../../../../@types/with-children";
+import { WithChildren } from "../../../../@types/with-children";
 
 interface Props extends ButtonProps {
   isRequesting?: boolean;
