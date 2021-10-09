@@ -39,7 +39,7 @@ const theme = extendTheme({
     widest: '0.15em',
   },
   styles: {
-    global: (props) => ({
+    global: (props: any) => ({
       '.chakra-slide.chakra-modal__content form': {
         display: 'flex',
         flexDirection: 'column',
