@@ -1,9 +1,8 @@
-import { Button, ButtonProps } from '@chakra-ui/react'
-import { IoSendOutline } from 'react-icons/io5'
-import { WithChildren } from '../../../../@types/with-children'
+import { Button, ButtonProps } from "@chakra-ui/react";
+import { WithChildren } from "../../../../../@types/with-children";
 
 interface Props extends ButtonProps {
-  isRequesting?: boolean
+  isRequesting?: boolean;
 }
 const SubmitButton = ({
   isRequesting,
@@ -16,14 +15,14 @@ const SubmitButton = ({
       isDisabled={isRequesting}
       isLoading={isRequesting}
       colorScheme="blue"
-      variant={rest.variant ?? 'solid'}
-      loadingText={rest.loadingText ?? 'Enviando'}
-      spinnerPlacement={rest.spinnerPlacement ?? 'start'}
+      variant={rest.variant ?? "solid"}
+      loadingText={rest.loadingText ?? "Enviando"}
+      spinnerPlacement={rest.spinnerPlacement ?? "start"}
       {...rest}
     >
-      {children ?? 'Enviar'}
+      {children ?? "Enviar"}
     </Button>
-  )
-}
+  );
+};
 
-export default SubmitButton
+export default SubmitButton;
