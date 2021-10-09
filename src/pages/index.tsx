@@ -15,10 +15,10 @@ import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
-import GameCard from "./components/GameCard";
-import ThemeToggleButton from "./components/ThemeToggleButton";
-import InputField from "./components/Forms/InputField";
-import ModalLogin from "./components/ModalLogin";
+import GameCard from "../components/GameCard";
+import ThemeToggleButton from "../components/ThemeToggleButton";
+import InputField from "../components/Forms/InputField";
+import ModalLogin from "../components/ModalLogin";
 
 const content = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
