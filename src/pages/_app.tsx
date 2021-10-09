@@ -1,6 +1,5 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
-import GlobalStyles from "../styles/global";
+import { ChakraProvider } from "@chakra-ui/react";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
