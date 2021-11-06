@@ -50,7 +50,7 @@ export default function Inicio() {
             colorScheme="whatsapp"
             mr={5}
             onClick={() => {
-              onDialogOpen()
+              onDialogOpen();
             }}
           >
             Login
