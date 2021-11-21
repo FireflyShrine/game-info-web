@@ -1,5 +1,5 @@
-import { invert, transparentize } from "polished";
-import { createGlobalStyle } from "styled-components";
+import { invert, transparentize } from 'polished'
+import { createGlobalStyle } from 'styled-components'
 
 export const CSSReset = createGlobalStyle`
 html,
@@ -498,4 +498,4 @@ ${({ theme }) => theme.palette.background.body};
   transition: all .5s ease;
 }
 
-`;
+`
