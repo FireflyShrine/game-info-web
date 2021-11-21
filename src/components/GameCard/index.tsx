@@ -1,7 +1,7 @@
 import { Image } from "@chakra-ui/image";
 import { Box, Heading, HStack, Text } from "@chakra-ui/layout";
 
-export default function GameCard() {
+function GameCard() {
   return (
     <Box
       width="250px"
@@ -31,3 +31,5 @@ export default function GameCard() {
     </Box>
   );
 }
+
+export default GameCard;
