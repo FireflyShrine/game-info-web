@@ -1,46 +1,54 @@
-import { ChevronRightIcon } from '@chakra-ui/icons'
-import { useBreakpointValue } from '@chakra-ui/media-query'
-import { Box, Breadcrumb, Divider } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { WithChildren } from '../../@types/with-children'
+import Head from "next/head";
+import { ChevronRightIcon } from "@chakra-ui/icons";
+import { useBreakpointValue } from "@chakra-ui/media-query";
+import { Box, Breadcrumb, Divider } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { WithChildren } from "../../@types/with-children";
 
-import { useBreadcrumb } from '../contexts/BreadcrumbProvider'
-import useUser from '../hooks/useUser'
-import Header from './Header'
-import Sidebar from './Sidebar'
+import { useBreadcrumb } from "../contexts/BreadcrumbProvider";
+import useUser from "../hooks/useUser";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
-export type Navigation = 'drawer' | 'sidebar'
+export type Navigation = "drawer" | "sidebar";
 interface IVariant {
-  navigation: Navigation
-  navigationButton: boolean
+  navigation: Navigation;
+  navigationButton: boolean;
 }
 
 const smVariant: IVariant = {
-  navigation: 'drawer',
+  navigation: "drawer",
   navigationButton: true,
-}
+};
 
 const mdVariant: IVariant = {
-  navigation: 'sidebar',
+  navigation: "sidebar",
   navigationButton: false,
+};
+
+interface Props {
+  pageTitle: string;
 }
 
-const Layout = ({ children }: WithChildren) => {
-  const { breadcrumbs } = useBreadcrumb()
+const Layout = ({ children, pageTitle }: WithChildren & Props) => {
+  const { breadcrumbs } = useBreadcrumb();
 
   const { user } = useUser({
-    redirectTo: '/login',
-  })
+    redirectTo: "/login",
+  });
 
-  const [isSidebarOpen, setSidebarOpen] = useState(false)
-  const variants = useBreakpointValue({ base: smVariant, md: mdVariant })
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const variants = useBreakpointValue({ base: smVariant, md: mdVariant });
 
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen)
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-  if (!user || user.isLoggedIn === false) return <p>Redirecionando...</p>
+  if (!user || user.isLoggedIn === false) return <p>Redirecionando...</p>;
   else
     return (
       <>
+        <Head>
+          <title>{pageTitle}</title>
+        </Head>
         <Sidebar
           navVariant={variants?.navigation}
           isOpen={isSidebarOpen}
@@ -70,7 +78,7 @@ const Layout = ({ children }: WithChildren) => {
           </Box>
         </Box>
       </>
-    )
-}
+    );
+};
 
-export default Layout
+export default Layout;
