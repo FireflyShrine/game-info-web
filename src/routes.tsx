@@ -1,5 +1,7 @@
 import React from "react";
-import { FaUserGraduate, FaHospital, FaHome } from "react-icons/fa";
+import { FaGamepad } from "react-icons/fa";
+import { GiGameConsole } from "react-icons/gi";
+import { BiBuildings } from "react-icons/bi";
 import { Navigation } from "../@types/navigation-items";
 
 const SIZE = 20;
@@ -9,18 +11,18 @@ export const navigationItems: Navigation[] = [
     topic: "Administração",
     children: [
       {
-        href: "/",
-        icon: <FaHome size={SIZE} />,
-        title: "Games",
+        href: "/games",
+        icon: <FaGamepad size={SIZE} />,
+        title: "Jogos",
       },
       {
-        href: "/hospitais",
-        icon: <FaHospital size={SIZE} />,
+        href: "/platforms",
+        icon: <GiGameConsole size={SIZE} />,
         title: "Plataformas",
       },
       {
-        href: "/especialidades",
-        icon: <FaUserGraduate size={SIZE} />,
+        href: "/developers",
+        icon: <BiBuildings size={SIZE} />,
         title: "Desenvolvedoras",
       },
     ],

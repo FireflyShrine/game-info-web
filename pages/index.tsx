@@ -1,1 +1,1 @@
-export { default } from '../src/views/games'
+export { default } from "../src/views";

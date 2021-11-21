@@ -1,89 +1,113 @@
-import { Box, Grid, Heading } from '@chakra-ui/react'
-import { Spinner } from '@chakra-ui/spinner'
-import { useFetch } from '../../hooks/useFetch'
-import { FaHospital, FaHeart, FaUserMd } from 'react-icons/fa'
+import { useState, useEffect } from "react";
+import {
+  Grid,
+  Heading,
+  HStack,
+  IconButton,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { HiPlus } from "react-icons/hi";
 
-import Layout from '../../layout'
+import Layout from "../../layout";
+import DrawerFormGame from "./drawer-form-games";
+import GameCardAuth from "./game-card-auth";
+import { IGames } from "../../api/games";
+import { useBreadcrumb } from "../../contexts/BreadcrumbProvider";
+import { useFetch } from "../../hooks/useFetch";
+import DialogRemoverGame from "./dialog-remove-game";
+import LoadingCards from "../../components/helpers/loading-cards";
 
-type IndicadoresProps = {
-  totalMedicos: number
-  totalHospitais: number
-  totalMatches: number
-}
+const Games = () => {
+  const [idGame, setIdGame] = useState<number | null>(null);
+  const { changeBreadcrumbs } = useBreadcrumb();
 
-const Home = () => {
-  const { response, isLoading } =
-    useFetch<IndicadoresProps>(`metricas/indicadores`)
+  const {
+    isOpen: isOpenDrawer,
+    onOpen: onOpenDrawer,
+    onClose: onCloseDrawer,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDialogOpen,
+    onOpen: onDialogOpen,
+    onClose: onDialogClose,
+  } = useDisclosure();
+
+  const { response, isLoading, reload } = useFetch<IGames[]>(`http://localhost:5432/jogos`);
+  useEffect(() => {
+    changeBreadcrumbs([{ title: "Jogos", href: "/games" }]);
+  }, []);
 
   return (
-    <Layout>
+    <Layout pageTitle="Jogos - Game Info">
+      <HStack
+        justifyContent="space-between"
+        alignItems="center"
+        marginBottom={2}
+      >
+        <Heading size="lg" marginBottom={2}>
+          Jogos
+        </Heading>
+        <Tooltip hasArrow label="Adicionar jogo" placement="auto">
+          <IconButton
+            colorScheme="blue"
+            aria-label="Adição de jogo"
+            margin={1}
+            icon={<HiPlus />}
+            onClick={onOpenDrawer}
+          />
+        </Tooltip>
+      </HStack>
       <Grid
-        marginTop={5}
         templateColumns={[
-          'repeat(1, 1fr)',
-          'repeat(2, 1fr)',
-          'repeat(2, 1fr)',
-          'repeat(3, 1fr)',
-          'repeat(4, 1fr)',
+          "repeat(1, 1fr)",
+          "repeat(2, 1fr)",
+          "repeat(2, 1fr)",
+          "repeat(3, 1fr)",
+          "repeat(4, 1fr)",
         ]}
         gap={5}
+        marginTop={10}
       >
-        <Box borderWidth="1px" borderRadius="lg" padding={2}>
-          <Heading
-            fontSize={15}
-            display="flex"
-            flexDir="row"
-            alignItems="center"
-          >
-            <FaHospital size={20} style={{ marginRight: 5 }} /> Total de
-            Hospitais
-          </Heading>
-          <Heading fontSize={40} mt={5} textAlign="center">
-            {isLoading && response?.totalHospitais != 0 ? (
-              <Spinner />
-            ) : (
-              response?.totalHospitais
-            )}
-          </Heading>
-        </Box>
-        <Box borderWidth="1px" borderRadius="lg" padding={2}>
-          <Heading
-            fontSize={15}
-            display="flex"
-            flexDir="row"
-            alignItems="center"
-          >
-            {' '}
-            <FaUserMd size={20} style={{ marginRight: 5 }} /> Total de Médicos
-          </Heading>
-          <Heading fontSize={40} mt={5} textAlign="center">
-            {isLoading && response?.totalMedicos != 0 ? (
-              <Spinner />
-            ) : (
-              response?.totalMedicos
-            )}
-          </Heading>
-        </Box>
-        <Box borderWidth="1px" borderRadius="lg" padding={2}>
-          <Heading
-            fontSize={15}
-            display="flex"
-            flexDir="row"
-            alignItems="center"
-          >
-            <FaHeart size={20} style={{ marginRight: 5 }} /> Total de Matches
-          </Heading>
-          <Heading fontSize={40} mt={5} textAlign="center">
-            {isLoading && response?.totalMatches != 0 ? (
-              <Spinner />
-            ) : (
-              response?.totalMatches
-            )}
-          </Heading>
-        </Box>
+        <LoadingCards isLoading={isLoading} height="80px" />
+        {response?.map((game) => (
+          <GameCardAuth
+            key={`jogo-${game.id}`}
+            game={game}
+            onEditClick={() => {
+              setIdGame(game.id);
+              onOpenDrawer();
+            }}
+            onDeleteClick={() => {
+              setIdGame(game.id);
+              onDialogOpen();
+            }}
+          />
+        ))}
       </Grid>
-    </Layout>
-  )
-}
 
-export default Home
+      <DrawerFormGame
+        idGame={idGame ?? 0}
+        isOpen={isOpenDrawer}
+        onClose={() => {
+          setIdGame(null);
+          onCloseDrawer();
+          reload();
+        }}
+      />
+
+      <DialogRemoverGame
+        idGame={idGame ?? 0}
+        isOpen={isDialogOpen}
+        onClose={() => {
+          setIdGame(null);
+          onDialogClose();
+          reload();
+        }}
+      />
+    </Layout>
+  );
+};
+
+export default Games;
