@@ -9,12 +9,15 @@ import ThemeToggleButton from "../components/ThemeToggleButton";
 import InputField from "../components/Forms/InputField";
 import GameCard from "../components/GameCard";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const content = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function Initial() {
   const formRef = useRef<FormHandles>(null);
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const router = useRouter();
 
   function handleSubmit() {
     console.log("teste");
@@ -29,12 +32,18 @@ function Initial() {
         <HStack borderBottomWidth={1} p={3} justifyContent="space-between">
           <Heading color="blue.400">Game Info</Heading>
 
-          <Button colorScheme="blue">
+          {/* <Button colorScheme="blue">
             <Text mr={2}>Documentação</Text>{" "}
             <AiOutlineArrowRight size={20} style={{ marginTop: 4 }} />
-          </Button>
+          </Button> */}
           <HStack>
-            <Button colorScheme="whatsapp" mr={5}>
+            <Button
+              colorScheme="whatsapp"
+              mr={5}
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
               Login
             </Button>
             <ThemeToggleButton

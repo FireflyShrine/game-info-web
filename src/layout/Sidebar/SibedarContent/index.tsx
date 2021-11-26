@@ -29,7 +29,7 @@ export const SibedarContent = ({ onClick }: Props) => {
 
   const logout = useCallback(async () => {
     await mutateUser(fetcher('/api/logout'))
-    router.push('/login')
+    router.push('/')
   }, [router, mutateUser])
 
   return (

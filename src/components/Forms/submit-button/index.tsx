@@ -1,5 +1,4 @@
 import { Button, ButtonProps } from '@chakra-ui/react'
-import { IoSendOutline } from 'react-icons/io5'
 import { WithChildren } from '../../../../@types/with-children'
 
 interface Props extends ButtonProps {
@@ -17,7 +16,6 @@ const SubmitButton = ({
       isLoading={isRequesting}
       colorScheme="blue"
       variant={rest.variant ?? 'solid'}
-      loadingText={rest.loadingText ?? 'Enviando'}
       spinnerPlacement={rest.spinnerPlacement ?? 'start'}
       {...rest}
     >

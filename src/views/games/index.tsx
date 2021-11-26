@@ -34,7 +34,7 @@ const Games = () => {
     onClose: onDialogClose,
   } = useDisclosure();
 
-  const { response, isLoading, reload } = useFetch<IGames[]>(`http://localhost:5432/jogos`);
+  const { response, isLoading, reload } = useFetch<IGames[]>(`http://localhost:8080/jogos`);
   useEffect(() => {
     changeBreadcrumbs([{ title: "Jogos", href: "/games" }]);
   }, []);

@@ -14,20 +14,20 @@ import { HiPlus } from "react-icons/hi";
 import { useBreadcrumb } from "../../contexts/BreadcrumbProvider";
 import { useFetch } from "../../hooks/useFetch";
 import Layout from "../../layout";
-import DialogRemoverDeveloper from "./dialog-remove-developer";
-import { IDeveloper } from "../../api/developers";
-import DrawerFormDeveloper from "./form-developer";
-import CardDeveloper from "./card-developer";
+import CardPlatform from "./card-platform";
+import DrawerFormPlatform from "./form-platform";
+import DialogRemoverPlatform from "./dialog-remove-platform";
+import { IPlatform } from "../../api/platforms";
 
-function Developer() {
-  const [idDeveloper, setIdDeveloper] = useState<number | null>(null);
+function Platform() {
+  const [idPlatform, setIdPlatform] = useState<number | null>(null);
 
   const { changeBreadcrumbs } = useBreadcrumb();
 
   useEffect(() => {
     changeBreadcrumbs([
       { title: "Início", href: "/" },
-      { title: "Desenvolvedoras" },
+      { title: "Plataforma" },
     ]);
   }, []);
 
@@ -42,28 +42,28 @@ function Developer() {
     onClose: onDialogClose,
   } = useDisclosure();
 
-  const { response, isLoading, reload } = useFetch<IDeveloper[]>(
-    `http://localhost:8080/desenvolvedoras`
+  const { response, isLoading, reload } = useFetch<IPlatform[]>(
+    `http://localhost:8080/plataformas`
   );
 
   return (
-    <Layout pageTitle="Desenvolvedoras - Game Info">
+    <Layout pageTitle="Plataformas - Game Info">
       <HStack justifyContent="space-between" marginBottom={2}>
         <Heading size="lg" marginBottom={2}>
           Plataforma
         </Heading>
 
-        <Tooltip hasArrow label="Adicionar desenvolvedoras" placement="auto">
+        <Tooltip hasArrow label="Adicionar plataforma" placement="auto">
           <IconButton
             colorScheme="blue"
-            aria-label="Adição de desenvolvedoras"
+            aria-label="Adição de plataforma"
             margin={1}
             icon={<HiPlus />}
             onClick={onOpenDrawer}
           />
         </Tooltip>
       </HStack>
-      {isLoading && <Text>Carregando desenvolvedoras...</Text>}
+      {isLoading && <Text>Carregando plataformas...</Text>}
       <Grid
         mt={10}
         templateColumns={[
@@ -75,36 +75,36 @@ function Developer() {
         gap={5}
       >
         {response?.map((x) => (
-          <CardDeveloper
-            developer={x}
-            key={`developer-${x.id}`}
+          <CardPlatform
+            platform={x}
+            key={`platform-${x.id}`}
             onEditClick={() => {
-              setIdDeveloper(x.id);
+              setIdPlatform(x.id);
               onOpenDrawer();
             }}
             onDeleteClick={() => {
-              setIdDeveloper(x.id);
+              setIdPlatform(x.id);
               onDialogOpen();
             }}
           />
         ))}
       </Grid>
 
-      <DrawerFormDeveloper
-        idDeveloper={idDeveloper ?? 0}
+      <DrawerFormPlatform
+        idPlatform={idPlatform ?? 0}
         isOpen={isOpenDrawer}
         onClose={() => {
-          setIdDeveloper(null);
+          setIdPlatform(null);
           onCloseDrawer();
           reload();
         }}
       />
 
-      <DialogRemoverDeveloper
-        idDeveloper={idDeveloper ?? 0}
+      <DialogRemoverPlatform
+        idPlatform={idPlatform ?? 0}
         isOpen={isDialogOpen}
         onClose={() => {
-          setIdDeveloper(null);
+          setIdPlatform(null);
           onDialogClose();
           reload();
         }}
@@ -113,4 +113,4 @@ function Developer() {
   );
 }
 
-export default Developer;
+export default Platform;

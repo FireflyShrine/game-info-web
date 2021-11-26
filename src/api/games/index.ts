@@ -1,27 +1,19 @@
+import { IDeveloper } from "../developers";
+import { IPlatform } from "../platforms";
 import { url } from "../url";
-
-export type IPlatforms = {
-  id: number;
-  nome: string;
-};
-
-export type IDevelopers = {
-  id: number;
-  nome: string;
-};
 
 export type IGames = {
   id: number;
   nome: string;
-  plataforma: IPlatforms[];
-  desenvolvedora: IDevelopers[];
+  plataforma: IPlatform[];
+  desenvolvedora: IDeveloper[];
   dataLancamento: Date;
 };
 
 export type ICreateGames = {
   nome: string;
-  plataforma: IPlatforms[];
-  desenvolvedora: IDevelopers[];
+  plataforma: IPlatform[];
+  desenvolvedora: IDeveloper[];
   dataLancamento: Date;
 };
 

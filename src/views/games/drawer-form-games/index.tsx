@@ -19,15 +19,21 @@ import { useFetch } from "../../../hooks/useFetch";
 import SubmitButton from "../../../components/Forms/submit-button";
 import { createGame, IGames, updateGame } from "../../../api/games";
 import { schema } from "./game.schema";
+import InputFile from "../../../components/Forms/InputFile";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 interface Props {
   idGame?: number;
   isOpen: boolean;
   onClose: () => void;
 }
+
 const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
+
+  const router = useRouter();
 
   const handleSubmit = async (game: any) => {
     try {
@@ -35,10 +41,19 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
       await schema.validate(game, {
         abortEarly: false,
       });
-
       if (idGame) {
-        await updateGame(idGame, game);
+        const formData = new FormData();
+        formData.append("file", game.imagem);
+        const response = await axios.post("api/upload", formData);
+        game.imagem = response.data.url;
+        console.log(game);
+        await updateGame(game, idGame);
       } else {
+        const formData = new FormData();
+        formData.append("file", game.imagem);
+        const response = await axios.post("api/upload", formData);
+        game.imagem = response.data.url;
+        console.log(game);
         await createGame(game);
       }
       onClose();
@@ -49,8 +64,8 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
     }
   };
 
-  const { response: perfil, isLoading: loadingPerfil } = useFetch<IGames>(
-    idGame ? `/games/${idGame}` : undefined
+  const { response: game, isLoading: loadingGame } = useFetch<IGames>(
+    idGame ? `http://localhost:5432/jogos/${idGame}` : undefined
   );
 
   return (
@@ -68,12 +83,15 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
             id="form-game"
             ref={formRef}
             onSubmit={handleSubmit}
-            initialData={perfil}
+            initialData={game}
           >
-            {!!idGame && loadingPerfil && (
+            {!!idGame && loadingGame && (
               <Text fontSize="xs">Buscando informações do jogo...</Text>
             )}
-            <InputField name="jogo" label="Jogo" marginBottom={2} />
+            <InputField name="nome" label="Jogo" marginBottom={2} />
+            <InputField name="data" label="Data de Lançamento" type="date" />
+            <InputField name="plataforma" label="plataforma" />
+            <InputFile name="image" />
           </Form>
         </DrawerBody>
 
@@ -84,7 +102,7 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
 
           <SubmitButton
             form="form-game"
-            isRequesting={loading || (!!idGame && loadingPerfil)}
+            isRequesting={loading || (!!idGame && loadingGame)}
           >
             {!!idGame && "Salvar"}
             {!idGame && "Adicionar"}

@@ -8,26 +8,27 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { deleteGame, IGames } from "../../../api/games";
+import { deletePlatform, IPlatform } from "../../../api/platforms";
 import { useFetch } from "../../../hooks/useFetch";
 
-type DialogRemoverGameProps = {
-  idGame?: number;
+type DialogRemoverPlatformProps = {
+  idPlatform?: number;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const DialogRemoverGame = ({
-  idGame,
+const DialogRemoverPlatform = ({
+  idPlatform,
   isOpen,
   onClose,
-}: DialogRemoverGameProps) => {
+}: DialogRemoverPlatformProps) => {
   const [loading, setLoading] = useState(false);
   const cancelRef = React.useRef<any>();
 
-  const { response: game, isLoading: loadingGame } = useFetch<IGames>(
-    idGame ? `http://localhost:5432/jogos/${idGame}` : undefined
-  );
+  const { response: platform, isLoading: loadingPlatform } =
+    useFetch<IPlatform>(
+      idPlatform ? `http://localhost:8080/plataformas/${idPlatform}` : undefined
+    );
 
   return (
     <AlertDialog
@@ -38,12 +39,12 @@ const DialogRemoverGame = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Deletar <b>{game?.nome}?</b>
+            Deletar Plataforma <b>{platform?.nome}</b>
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Tem certeza que deseja excluir este jogo? Essa ação não poderá ser
-            desfeita.
+            Tem certeza que deseja excluir esta plataforma? Essa ação não poderá
+            ser desfeita.
           </AlertDialogBody>
 
           <AlertDialogFooter>
@@ -53,14 +54,14 @@ const DialogRemoverGame = ({
             <Button
               colorScheme="red"
               onClick={async () => {
-                if (idGame) {
+                if (idPlatform) {
                   setLoading(true);
-                  await deleteGame(idGame);
+                  await deletePlatform(idPlatform);
                   onClose();
                   setLoading(false);
                 }
               }}
-              isLoading={loading || loadingGame}
+              isLoading={loading || loadingPlatform}
               ml={3}
             >
               Sim, apagar
@@ -72,4 +73,4 @@ const DialogRemoverGame = ({
   );
 };
 
-export default DialogRemoverGame;
+export default DialogRemoverPlatform;

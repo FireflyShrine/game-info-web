@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Flex, Heading, Box, useColorMode } from "@chakra-ui/react";
+import { Flex, Heading, Box, useColorMode, Text } from "@chakra-ui/react";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import axios from "axios";
@@ -53,9 +53,10 @@ const Login = () => {
       </Head>
       <Flex height="100vh" alignItems="center" justifyContent="center">
         <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading mb={8} alignSelf="center">
-            Faça Login
-          </Heading>
+          <Heading alignSelf="center">Faça Login</Heading>
+          <Text margin={5} color="#e93c3ce1">
+            Atenção! Esta funcionalidade é apenas para administradores do site.
+          </Text>
           <Form ref={formRef} onSubmit={handleSubmit} id="form-login">
             <InputField name="email" label="Email:" />
             <Box mt={5}>

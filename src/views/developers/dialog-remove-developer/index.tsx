@@ -8,26 +8,29 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { deleteGame, IGames } from "../../../api/games";
+import { deleteIDeveloper, IDeveloper } from "../../../api/developers";
 import { useFetch } from "../../../hooks/useFetch";
 
-type DialogRemoverGameProps = {
-  idGame?: number;
+type DialogRemoverDeveloperProps = {
+  idDeveloper?: number;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const DialogRemoverGame = ({
-  idGame,
+const DialogRemoverDeveloper = ({
+  idDeveloper,
   isOpen,
   onClose,
-}: DialogRemoverGameProps) => {
+}: DialogRemoverDeveloperProps) => {
   const [loading, setLoading] = useState(false);
   const cancelRef = React.useRef<any>();
 
-  const { response: game, isLoading: loadingGame } = useFetch<IGames>(
-    idGame ? `http://localhost:5432/jogos/${idGame}` : undefined
-  );
+  const { response: developer, isLoading: loadingDeveloper } =
+    useFetch<IDeveloper>(
+      idDeveloper
+        ? `http://localhost:8080/plataformas/${idDeveloper}`
+        : undefined
+    );
 
   return (
     <AlertDialog
@@ -38,12 +41,12 @@ const DialogRemoverGame = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Deletar <b>{game?.nome}?</b>
+            Deletar desenvolvedora <b>{developer?.nome}</b>
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Tem certeza que deseja excluir este jogo? Essa ação não poderá ser
-            desfeita.
+            Tem certeza que deseja excluir esta desenvolvedora? Essa ação não
+            poderá ser desfeita.
           </AlertDialogBody>
 
           <AlertDialogFooter>
@@ -53,14 +56,14 @@ const DialogRemoverGame = ({
             <Button
               colorScheme="red"
               onClick={async () => {
-                if (idGame) {
+                if (idDeveloper) {
                   setLoading(true);
-                  await deleteGame(idGame);
+                  await deleteIDeveloper(idDeveloper);
                   onClose();
                   setLoading(false);
                 }
               }}
-              isLoading={loading || loadingGame}
+              isLoading={loading || loadingDeveloper}
               ml={3}
             >
               Sim, apagar
@@ -72,4 +75,4 @@ const DialogRemoverGame = ({
   );
 };
 
-export default DialogRemoverGame;
+export default DialogRemoverDeveloper;

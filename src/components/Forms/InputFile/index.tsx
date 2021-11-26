@@ -52,14 +52,14 @@ export default function InputFile({ name, ...rest }: Props) {
       <Flex
         as="label"
         htmlFor="image"
-        border="2px solid #858585"
+        border="2px solid #d3d3d3"
         flex={1}
         height="40px"
         borderRadius={5}
         justifyContent="center"
         alignItems="center"
       >
-        Clique para enviar sua foto
+        Clique para enviar uma imagem
       </Flex>
       {preview && (
         <img

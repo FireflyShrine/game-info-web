@@ -1,1 +1,1 @@
-export { default } from '../../src/views/developers'
+export { default } from "../../src/views/developers";
