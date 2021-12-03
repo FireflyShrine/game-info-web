@@ -5,21 +5,26 @@ import { url } from "../url";
 export type IGames = {
   id: number;
   nome: string;
+  image: string;
   plataforma: IPlatform[];
   desenvolvedora: IDeveloper[];
-  dataLancamento: Date;
+  data: string;
 };
 
 export type ICreateGames = {
   nome: string;
-  plataforma: IPlatform[];
-  desenvolvedora: IDeveloper[];
-  dataLancamento: Date;
+  image: string;
+  plataformas: IPlatform[];
+  desenvolvedoras: IDeveloper[];
+  data: string;
 };
 
 export async function createGame(game: ICreateGames) {
   try {
-    const response = await url.post<IGames>(`jogos`, game);
+    const response = await url.post<IGames>(
+      `http://localhost:8080/jogos`,
+      game
+    );
     return response.data;
   } catch (err) {
     console.error({ details: err });
@@ -29,7 +34,10 @@ export async function createGame(game: ICreateGames) {
 
 export async function updateGame(idGame: number, game: ICreateGames) {
   try {
-    const response = await url.put<ICreateGames>(`/jogos/${idGame}`, game);
+    const response = await url.put<ICreateGames>(
+      `http://localhost:8080/jogos/${idGame}`,
+      game
+    );
     return response.data;
   } catch (err) {
     console.error({ details: err });
@@ -39,7 +47,7 @@ export async function updateGame(idGame: number, game: ICreateGames) {
 
 export async function deleteGame(idGame: number) {
   try {
-    const response = await url.delete(`/jogos/${idGame}`);
+    const response = await url.delete(`http://localhost:8080/jogos/${idGame}`);
     return response.data;
   } catch (err) {
     console.error({ details: err });
