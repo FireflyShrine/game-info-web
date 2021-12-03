@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Axios, { AxiosError } from 'axios'
 import { SWRConfiguration } from 'swr'
 import { HttpMethods } from '../../@types/requests-methods'
@@ -47,7 +48,7 @@ async function dataFetcher<TResponse = any>(
   method: HttpMethods = 'get'
 ) {
   try {
-    const response = await api.request({ method, url })
+    const response = await axios.request({ method, url })
     return response.data as TResponse
   } catch (error) {
     console.error('ERRO NA REQUISIÇÃO: ', error)

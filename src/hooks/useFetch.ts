@@ -16,7 +16,7 @@ export function useFetch<TResponse = any, TErrorResponse = any>(
   validateOnFocus = true
 ): FetchReturn<TResponse, TErrorResponse> {
   const [demorando, setDemorando] = useState(false);
-  const { data, error, revalidate } = useSWR<
+  const { data, error, mutate } = useSWR<
     TResponse,
     AxiosError<TErrorResponse>
   >(url ? [url] : null, {
@@ -37,6 +37,6 @@ export function useFetch<TResponse = any, TErrorResponse = any>(
     demorando,
     response: data as TResponse,
     isLoading: !data && !error,
-    reload: () => revalidate(),
+    reload: () => mutate(),
   };
 }

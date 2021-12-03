@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "@chakra-ui/button";
 import { useColorMode } from "@chakra-ui/color-mode";
 import { Box, Heading, HStack, Grid, VStack, Text } from "@chakra-ui/layout";
@@ -17,15 +17,17 @@ import { Spinner } from "@chakra-ui/spinner";
 function Initial() {
   const formRef = useRef<FormHandles>(null);
   const { colorMode, toggleColorMode } = useColorMode();
+  const [filtro, setFiltro] = useState<IGames>();
 
   const router = useRouter();
 
   const { response, isLoading } = useFetch<IGames[]>(
-    `http://localhost:8080/jogos`
+    `http://localhost:8080/jogos?${filtro?.nome && "nome=" + filtro?.nome}`
   );
 
-  function handleSearch() {
-    console.log("BUSCANDO...");
+  function handleSearch(data: IGames) {
+    setFiltro(data);
+    console.log(data);
   }
 
   return (
@@ -37,7 +39,9 @@ function Initial() {
         <HStack borderBottomWidth={1} p={3} justifyContent="space-between">
           <Heading color="orange">Game Info</Heading>
 
-          <Button colorScheme="blue">
+          <Button colorScheme="blue" onClick={() => {
+                router.push("/documentation");
+              }}>
             <Text mr={2}>Documentação</Text>{" "}
             <AiOutlineArrowRight size={20} style={{ marginTop: 4 }} />
           </Button>
@@ -64,11 +68,14 @@ function Initial() {
               onSubmit={handleSearch}
               style={{ width: "100%", marginBottom: 15 }}
             >
-              <InputField
-                name="filtro"
-                placeholder="Busque um jogo"
-                width="100%"
-              />
+              <HStack>
+                <InputField
+                  name="nome"
+                  placeholder="Busque um jogo"
+                  width="100%"
+                />
+                <Button colorScheme="orange" type="submit">Buscar</Button>
+              </HStack>
             </Form>
             {!response && isLoading && <Spinner />}
             <Grid

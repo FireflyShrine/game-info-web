@@ -8,6 +8,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  useToast,
 } from "@chakra-ui/react";
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
@@ -32,6 +33,8 @@ const DrawerFormPlatform = ({ idPlatform, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
+  const toast = useToast();
+
   const handleSubmit = async (platform: any) => {
     try {
       setLoading(true);
@@ -40,14 +43,30 @@ const DrawerFormPlatform = ({ idPlatform, isOpen, onClose }: Props) => {
       });
       if (idPlatform) {
         await updatePlatform(idPlatform, platform);
-        console.log(platform);
+        toast({
+          description: "Plataforma alterada com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       } else {
         await createPlatform(platform);
-        console.log(platform);
+        toast({
+          description: "Plataforma cadastrar com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       }
       onClose();
     } catch (err) {
       warnValidation(err, formRef.current);
+      toast({
+        description: "Ocorreu um erro",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -87,11 +106,12 @@ const DrawerFormPlatform = ({ idPlatform, isOpen, onClose }: Props) => {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
+          <Button mr={3} onClick={onClose}>
             Cancelar
           </Button>
 
           <Button
+            type="submit"
             form="form-platform"
             isLoading={loading}
             isDisabled={!!idPlatform && loadingPlatform}

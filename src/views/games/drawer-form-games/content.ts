@@ -1,11 +1,11 @@
 export const options = [
   {
-    value: "Playstation 4",
-    label: "Playstation 4",
-  },
-  {
     value: "Playstation 3",
     label: "Playstation 3",
+  },
+  {
+    value: "Playstation 4",
+    label: "Playstation 4",
   },
   {
     value: "XBOX ONE",
@@ -24,7 +24,11 @@ export const options = [
     label: "PSVITA",
   },
   {
-    value: "PC",
-    label: "PC",
+    value: "Computador",
+    label: "Computador",
+  },
+  {
+    value: "Nintendo Switch",
+    label: "Nintendo Switch",
   },
 ];

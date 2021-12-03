@@ -8,6 +8,7 @@ import {
   InputRightElement,
   Button,
   InputGroup,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useField } from "@unform/core";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
@@ -41,11 +42,14 @@ const PasswordField = ({ name, label, ...rest }: Props) => {
     });
   }, [fieldName, registerField]);
 
+  const bgColor = useColorModeValue("white", "gray.900");
+
   return (
     <FormControl>
       {label && <FormLabel htmlFor={fieldName}>{label}</FormLabel>}
       <InputGroup size="md">
         <Input
+          bg={bgColor}
           pr="4.5rem"
           type={show ? "text" : "password"}
           ref={inputRef}

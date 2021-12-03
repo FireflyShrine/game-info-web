@@ -4,55 +4,43 @@ import {
   Select,
   SelectProps,
   Text,
-  useColorModeValue,
-} from '@chakra-ui/react'
-import { useField } from '@unform/core'
-import { useEffect, useRef } from 'react'
-export interface SelectOption {
-  value: any
-  label: string
-}
+} from "@chakra-ui/react";
+import { useField } from "@unform/core";
+import { useEffect, useRef } from "react";
+import { WithChildren } from "../../../../@types/with-children";
 
 export interface CustomSelectProps extends SelectProps {
-  name: string
-  options: SelectOption[]
-  label?: string
-  isLoading?: boolean
+  name: string;
+  label?: string;
+  isLoading?: boolean;
 }
 
 const SelectField = ({
   name,
   label,
   isLoading,
-  options,
+  children,
   ...rest
-}: CustomSelectProps) => {
-  const selectRef = useRef<HTMLSelectElement>(null)
+}: WithChildren<CustomSelectProps>) => {
+  const selectRef = useRef<HTMLSelectElement>(null);
 
-  const {
-    fieldName,
-    defaultValue = rest.defaultValue,
-    registerField,
-    error,
-  } = useField(name)
-  console.log('DEFAULT => ', selectRef)
+  const { fieldName, defaultValue, registerField, error } = useField(name);
+
   useEffect(() => {
     registerField({
       ref: selectRef,
       name: fieldName,
       getValue: (ref) => {
-        return ref.current?.value
+        return ref.current?.value;
       },
       setValue: (ref, newValue) => {
-        ref.current.value = newValue
+        ref.current.value = newValue;
       },
       clearValue: (ref) => {
-        ref.current.value = ''
+        ref.current.value = "";
       },
-    })
-  }, [fieldName, registerField])
-
-  const bgColor = useColorModeValue('white', 'gray.900')
+    });
+  }, [fieldName, registerField]);
 
   return (
     <FormControl>
@@ -60,27 +48,14 @@ const SelectField = ({
 
       <Select
         id={fieldName}
-        name={fieldName}
         ref={selectRef}
-        defaultValue={defaultValue}
-        bg={bgColor}
-        placeholder={
-          rest.isDisabled ? 'Sem dados' : isLoading ? 'Buscando dados...' : ''
-        }
-        isDisabled={isLoading ?? rest.isDisabled}
         isInvalid={!!error}
+        defaultValue={defaultValue}
+        placeholder={isLoading ? "Buscando dados..." : ""}
+        isDisabled={isLoading}
         {...rest}
       >
-        <option>Selecione...</option>
-        {options.map((op) => (
-          <option
-            key={`select-${fieldName}-${op.value}`}
-            value={op.value}
-            selected={op.value === defaultValue}
-          >
-            {op.label}
-          </option>
-        ))}
+        {children}
       </Select>
 
       {error && (
@@ -89,7 +64,7 @@ const SelectField = ({
         </Text>
       )}
     </FormControl>
-  )
-}
+  );
+};
 
-export default SelectField
+export default SelectField;

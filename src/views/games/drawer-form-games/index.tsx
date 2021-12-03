@@ -9,6 +9,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
@@ -16,13 +17,14 @@ import { Form } from "@unform/web";
 import InputField from "../../../components/Forms/InputField";
 import { warnValidation } from "../../../components/helpers/warnValidation";
 import { useFetch } from "../../../hooks/useFetch";
-import SubmitButton from "../../../components/Forms/submit-button";
 import { createGame, IGames, updateGame } from "../../../api/games";
 import { schema } from "./game.schema";
 import InputFile from "../../../components/Forms/InputFile";
 import axios from "axios";
-import Select from "react-select";
 import { options } from "./content";
+import MultiSelect from "../../../components/Forms/SelectField/multi-select";
+import SelectField from "../../../components/Forms/SelectField";
+import { IDeveloper } from "../../../api/developers";
 
 interface Props {
   idGame?: number;
@@ -33,12 +35,15 @@ interface Props {
 const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const [platforms, setPlatforms] = useState<any>();
+
   const formRef = useRef<FormHandles>(null);
 
+  const toast = useToast();
+
   const handleChange = (e?: any) => {
-    console.log(Array.isArray(e) ? e.map((x) => x.value) : []);
     setPlatforms(Array.isArray(e) ? e.map((x) => x.value) : []);
   };
+
   const handleSubmit = async (game: any) => {
     try {
       setLoading(true);
@@ -50,19 +55,35 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
         formData.append("file", game.image);
         const response = await axios.post("api/upload", formData);
         game.image = response.data.url;
-        game.plataforma = platforms;
         await updateGame(idGame, game);
+        toast({
+          description: "Jogo alterado com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       } else {
         const formData = new FormData();
         formData.append("file", game.image);
         const response = await axios.post("api/upload", formData);
         game.image = response.data.url;
-        console.log(game);
         await createGame(game);
+        toast({
+          description: "Jogo cadastrado com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       }
       onClose();
     } catch (err) {
       warnValidation(err, formRef.current);
+      toast({
+        description: "Ocorreu um erro",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -71,6 +92,9 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   const { response: game, isLoading: loadingGame } = useFetch<IGames>(
     idGame ? `http://localhost:8080/jogos/${idGame}` : undefined
   );
+
+  const { response: desenvolvedoras, isLoading: loadingDesenvolvedoras } =
+    useFetch<IDeveloper[]>(`http://localhost:8080/desenvolvedoras`);
 
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
@@ -93,12 +117,32 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
               <Text fontSize="xs">Buscando informações do jogo...</Text>
             )}
             <InputField name="nome" label="Jogo" marginBottom={2} />
-            <InputField name="data" label="Data de Lançamento" type="date" />
-            <InputField name="desenvolvedora" label="Desenvolvedora" />
-            <Text>Plataforma</Text>
-            <Select
+            <InputField
+              name="data"
+              label="Data de Lançamento"
+              type="date"
+              marginBottom={2}
+            />
+            <SelectField
+              name="desenvolvedora"
+              label="Pesenvolvedora"
+              marginBottom={2}
+            >
+              <option value="">Selecione...</option>
+              {desenvolvedoras &&
+                desenvolvedoras?.map((desenvolvedora) => (
+                  <option
+                    key={`select-desenvolvedora-${desenvolvedora.id}`}
+                    value={desenvolvedora.nome}
+                  >
+                    {desenvolvedora.nome}
+                  </option>
+                ))}
+            </SelectField>
+            <MultiSelect
               isMulti
               name="plataforma"
+              label="Plataforma"
               options={options}
               onChange={handleChange}
             />
@@ -107,17 +151,21 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
+          <Button mr={3} onClick={onClose}>
             Cancelar
           </Button>
 
-          <SubmitButton
+          <Button
+            type="submit"
             form="form-game"
-            isRequesting={loading || (!!idGame && loadingGame)}
+            isDisabled={!!idGame && loadingGame}
+            isLoading={loading}
+            loadingText="Salvando"
+            colorScheme="orange"
           >
-            {!!idGame && "Salvar"}
+            {!!idGame && "Atualizar"}
             {!idGame && "Adicionar"}
-          </SubmitButton>
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

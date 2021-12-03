@@ -8,6 +8,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  useToast,
 } from "@chakra-ui/react";
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
@@ -33,6 +34,8 @@ const DrawerFormDeveloper = ({ idDeveloper, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
+  const toast = useToast();
+
   const handleSubmit = async (developer: any) => {
     try {
       setLoading(true);
@@ -41,14 +44,30 @@ const DrawerFormDeveloper = ({ idDeveloper, isOpen, onClose }: Props) => {
       });
       if (idDeveloper) {
         await updateDeveloper(idDeveloper, developer);
-        console.log(developer);
+        toast({
+          description: "Desenvolvedora alterada com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       } else {
         await createDeveloper(developer);
-        console.log(developer);
+        toast({
+          description: "Desenvolvedora cadastrar com sucesso",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
       }
       onClose();
     } catch (err) {
       warnValidation(err, formRef.current);
+      toast({
+        description: "Ocorreu um erro",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -90,12 +109,13 @@ const DrawerFormDeveloper = ({ idDeveloper, isOpen, onClose }: Props) => {
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
+          <Button mr={3} onClick={onClose}>
             Cancelar
           </Button>
 
           <Button
             form="form-developer"
+            type="submit"
             isDisabled={!!idDeveloper && loadingDeveloper}
             isLoading={loading}
             loadingText="Salvando"
