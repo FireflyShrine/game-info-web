@@ -50,12 +50,12 @@ function Platform() {
     <Layout pageTitle="Plataformas - Game Info">
       <HStack justifyContent="space-between" marginBottom={2}>
         <Heading size="lg" marginBottom={2}>
-          Plataforma
+          Plataformas
         </Heading>
 
         <Tooltip hasArrow label="Adicionar plataforma" placement="auto">
           <IconButton
-            colorScheme="blue"
+            colorScheme="orange"
             aria-label="Adição de plataforma"
             margin={1}
             icon={<HiPlus />}

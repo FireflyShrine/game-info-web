@@ -1,14 +1,22 @@
-import { useEffect, useState, useRef, useCallback } from "react";
-import { Flex, Heading, Box, useColorMode, Text } from "@chakra-ui/react";
+import { useState, useRef, useCallback } from "react";
+import {
+  Flex,
+  Heading,
+  Box,
+  Grid,
+  Button,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import { FormHandles, SubmitHandler } from "@unform/core";
 import { Form } from "@unform/web";
 import axios from "axios";
 
 import { error } from "../../components/helpers/toasts";
 import InputField from "../../components/Forms/InputField";
-import SubmitButton from "../../components/Forms/submit-button";
 import useUser from "../../hooks/useUser";
 import Head from "next/head";
+import PasswordField from "../../components/Forms/PasswordField";
 
 type Data = {
   email: string;
@@ -17,11 +25,6 @@ type Data = {
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const { setColorMode } = useColorMode();
-
-  useEffect(() => {
-    setColorMode("light");
-  });
 
   const formRef = useRef<FormHandles>(null);
   const { mutateUser } = useUser({
@@ -52,30 +55,59 @@ const Login = () => {
         <title>Login - Game Info</title>
       </Head>
       <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading alignSelf="center">Faça Login</Heading>
-          <Text margin={5} color="#e93c3ce1">
-            Atenção! Esta funcionalidade é apenas para administradores do site.
-          </Text>
-          <Form ref={formRef} onSubmit={handleSubmit} id="form-login">
-            <InputField name="email" label="Email:" />
-            <Box mt={5}>
-              <InputField name="password" label="Senha:" type="password" />
-            </Box>
+        <Grid templateColumns="repeat(2, 1fr)" height="100%" width="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            background="#e08b44"
+            p={5}
+          >
+            <Image width="300px" src="assets/joystick.png" />
+          </Box>
 
-            <SubmitButton
-              mt={8}
-              type="submit"
-              width="100%"
-              colorScheme="blue"
-              form="form-login"
-              isRequesting={loading}
-              loadingText="Entrando..."
+          <Flex
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            direction="column"
+            background="brand.100"
+            p={8}
+          >
+            <Heading mb={2} alignSelf="center">
+              Faça Login
+            </Heading>
+            <Text mb={8} color="red.300">
+              Funcionalidade para apenas administradores do site.
+            </Text>
+            <Form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              id="form-login"
+              style={{ width: "100%" }}
             >
-              Entrar
-            </SubmitButton>
-          </Form>
-        </Flex>
+              <InputField name="email" label="Email:" borderColor="#A0AEC0" />
+              <Box mt={5}>
+                <PasswordField
+                  name="password"
+                  label="Senha:"
+                  borderColor="#A0AEC0"
+                />
+              </Box>
+              <Button
+                mt={8}
+                type="submit"
+                width="100%"
+                bg="#e08b44"
+                form="form-login"
+                isLoading={loading}
+                _hover={{ bg: "#da935a" }}
+              >
+                Entrar
+              </Button>
+            </Form>
+          </Flex>
+        </Grid>
       </Flex>
     </>
   );

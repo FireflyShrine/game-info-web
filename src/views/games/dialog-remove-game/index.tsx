@@ -26,7 +26,7 @@ const DialogRemoverGame = ({
   const cancelRef = React.useRef<any>();
 
   const { response: game, isLoading: loadingGame } = useFetch<IGames>(
-    idGame ? `http://localhost:5432/jogos/${idGame}` : undefined
+    idGame ? `http://localhost:8080/jogos/${idGame}` : undefined
   );
 
   return (

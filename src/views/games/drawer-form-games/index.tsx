@@ -21,7 +21,6 @@ import { createGame, IGames, updateGame } from "../../../api/games";
 import { schema } from "./game.schema";
 import InputFile from "../../../components/Forms/InputFile";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 interface Props {
   idGame?: number;
@@ -32,8 +31,6 @@ interface Props {
 const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
-
-  const router = useRouter();
 
   const handleSubmit = async (game: any) => {
     try {
@@ -65,7 +62,7 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   };
 
   const { response: game, isLoading: loadingGame } = useFetch<IGames>(
-    idGame ? `http://localhost:5432/jogos/${idGame}` : undefined
+    idGame ? `http://localhost:8080/jogos/${idGame}` : undefined
   );
 
   return (

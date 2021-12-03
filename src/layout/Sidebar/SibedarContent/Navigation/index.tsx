@@ -22,7 +22,7 @@ const NavigationLink = ({
   const router = useRouter()
   const isActive = href === router.pathname
 
-  const activeBg = useColorModeValue('blue.500', 'blue.500')
+  const activeBg = useColorModeValue('orange.300', 'orange.400')
 
   return (
     <Link

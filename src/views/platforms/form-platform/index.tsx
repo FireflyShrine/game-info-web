@@ -15,7 +15,6 @@ import { Form } from "@unform/web";
 import InputField from "../../../components/Forms/InputField";
 import { warnValidation } from "../../../components/helpers/warnValidation";
 import { useFetch } from "../../../hooks/useFetch";
-import SubmitButton from "../../../components/Forms/submit-button";
 import { schema } from "./platform.schema";
 import {
   updatePlatform,
@@ -56,7 +55,7 @@ const DrawerFormPlatform = ({ idPlatform, isOpen, onClose }: Props) => {
 
   const { response: platform, isLoading: loadingPlatform } =
     useFetch<IPlatform>(
-      idPlatform ? `http://localhost:5432/plataformas/${idPlatform}` : undefined
+      idPlatform ? `http://localhost:8080/plataformas/${idPlatform}` : undefined
     );
 
   return (
@@ -92,13 +91,16 @@ const DrawerFormPlatform = ({ idPlatform, isOpen, onClose }: Props) => {
             Cancelar
           </Button>
 
-          <SubmitButton
+          <Button
             form="form-platform"
+            isLoading={loading}
             isDisabled={!!idPlatform && loadingPlatform}
+            loadingText="Salvando"
+            colorScheme="orange"
           >
             {!!idPlatform && "Atualizar"}
             {!idPlatform && "Adicionar"}
-          </SubmitButton>
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
