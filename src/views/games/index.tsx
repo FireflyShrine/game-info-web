@@ -34,7 +34,10 @@ const Games = () => {
     onClose: onDialogClose,
   } = useDisclosure();
 
-  const { response, isLoading, reload } = useFetch<IGames[]>(`http://localhost:8080/jogos`);
+  const { response, isLoading, reload } = useFetch<IGames[]>(
+    `http://localhost:8080/jogos`
+  );
+
   useEffect(() => {
     changeBreadcrumbs([{ title: "Jogos", href: "/games" }]);
   }, []);
@@ -51,7 +54,7 @@ const Games = () => {
         </Heading>
         <Tooltip hasArrow label="Adicionar jogo" placement="auto">
           <IconButton
-            colorScheme="blue"
+            colorScheme="orange"
             aria-label="Adição de jogo"
             margin={1}
             icon={<HiPlus />}

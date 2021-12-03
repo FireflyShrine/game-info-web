@@ -15,7 +15,6 @@ import { Form } from "@unform/web";
 import InputField from "../../../components/Forms/InputField";
 import { warnValidation } from "../../../components/helpers/warnValidation";
 import { useFetch } from "../../../hooks/useFetch";
-import SubmitButton from "../../../components/Forms/submit-button";
 
 import { schema } from "./developer.schema";
 import {
@@ -58,7 +57,7 @@ const DrawerFormDeveloper = ({ idDeveloper, isOpen, onClose }: Props) => {
   const { response: developer, isLoading: loadingDeveloper } =
     useFetch<IDeveloper>(
       idDeveloper
-        ? `http://localhost:8080/desenvolvedoras"/${idDeveloper}`
+        ? `http://localhost:8080/desenvolvedoras/${idDeveloper}`
         : undefined
     );
 
@@ -95,14 +94,16 @@ const DrawerFormDeveloper = ({ idDeveloper, isOpen, onClose }: Props) => {
             Cancelar
           </Button>
 
-          <SubmitButton
+          <Button
             form="form-developer"
             isDisabled={!!idDeveloper && loadingDeveloper}
+            isLoading={loading}
             loadingText="Salvando"
+            colorScheme="orange"
           >
             {!!idDeveloper && "Atualizar"}
             {!idDeveloper && "Adicionar"}
-          </SubmitButton>
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

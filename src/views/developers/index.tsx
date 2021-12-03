@@ -50,12 +50,12 @@ function Developer() {
     <Layout pageTitle="Desenvolvedoras - Game Info">
       <HStack justifyContent="space-between" marginBottom={2}>
         <Heading size="lg" marginBottom={2}>
-          Plataforma
+          Desenvolvedoras
         </Heading>
 
         <Tooltip hasArrow label="Adicionar desenvolvedoras" placement="auto">
           <IconButton
-            colorScheme="blue"
+            colorScheme="orange"
             aria-label="Adição de desenvolvedoras"
             margin={1}
             icon={<HiPlus />}

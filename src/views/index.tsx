@@ -1,17 +1,18 @@
 import React, { useRef } from "react";
 import { Button } from "@chakra-ui/button";
 import { useColorMode } from "@chakra-ui/color-mode";
-import { Box, Heading, HStack, Text, Grid, VStack } from "@chakra-ui/layout";
+import { Box, Heading, HStack, Grid, VStack, Text } from "@chakra-ui/layout";
 import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import ThemeToggleButton from "../components/ThemeToggleButton";
 import InputField from "../components/Forms/InputField";
 import GameCard from "../components/GameCard";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-const content = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import { useFetch } from "../hooks/useFetch";
+import { IGames } from "../api/games";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import { Spinner } from "@chakra-ui/spinner";
 
 function Initial() {
   const formRef = useRef<FormHandles>(null);
@@ -19,8 +20,12 @@ function Initial() {
 
   const router = useRouter();
 
-  function handleSubmit() {
-    console.log("teste");
+  const { response, isLoading } = useFetch<IGames[]>(
+    `http://localhost:8080/jogos`
+  );
+
+  function handleSearch() {
+    console.log("BUSCANDO...");
   }
 
   return (
@@ -30,12 +35,12 @@ function Initial() {
       </Head>
       <Box>
         <HStack borderBottomWidth={1} p={3} justifyContent="space-between">
-          <Heading color="blue.400">Game Info</Heading>
+          <Heading color="orange">Game Info</Heading>
 
-          {/* <Button colorScheme="blue">
+          <Button colorScheme="blue">
             <Text mr={2}>Documentação</Text>{" "}
             <AiOutlineArrowRight size={20} style={{ marginTop: 4 }} />
-          </Button> */}
+          </Button>
           <HStack>
             <Button
               colorScheme="whatsapp"
@@ -56,7 +61,7 @@ function Initial() {
           <VStack maxWidth="1000px" justifyContent="center">
             <Form
               ref={formRef}
-              onSubmit={handleSubmit}
+              onSubmit={handleSearch}
               style={{ width: "100%", marginBottom: 15 }}
             >
               <InputField
@@ -65,6 +70,7 @@ function Initial() {
                 width="100%"
               />
             </Form>
+            {!response && isLoading && <Spinner />}
             <Grid
               templateColumns={[
                 "repeat(1, 1fr)",
@@ -75,8 +81,8 @@ function Initial() {
               ]}
               gap={5}
             >
-              {content.map((x) => (
-                <GameCard key={`cad-${x}`} />
+              {response?.map((x) => (
+                <GameCard key={`cad-${x}`} game={x} />
               ))}
             </Grid>
           </VStack>
