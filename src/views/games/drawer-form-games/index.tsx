@@ -21,6 +21,8 @@ import { createGame, IGames, updateGame } from "../../../api/games";
 import { schema } from "./game.schema";
 import InputFile from "../../../components/Forms/InputFile";
 import axios from "axios";
+import Select from "react-select";
+import { options } from "./content";
 
 interface Props {
   idGame?: number;
@@ -30,8 +32,13 @@ interface Props {
 
 const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [platforms, setPlatforms] = useState<any>();
   const formRef = useRef<FormHandles>(null);
 
+  const handleChange = (e?: any) => {
+    console.log(Array.isArray(e) ? e.map((x) => x.value) : []);
+    setPlatforms(Array.isArray(e) ? e.map((x) => x.value) : []);
+  };
   const handleSubmit = async (game: any) => {
     try {
       setLoading(true);
@@ -40,16 +47,16 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
       });
       if (idGame) {
         const formData = new FormData();
-        formData.append("file", game.imagem);
+        formData.append("file", game.image);
         const response = await axios.post("api/upload", formData);
-        game.imagem = response.data.url;
-        console.log(game);
-        await updateGame(game, idGame);
+        game.image = response.data.url;
+        game.plataforma = platforms;
+        await updateGame(idGame, game);
       } else {
         const formData = new FormData();
-        formData.append("file", game.imagem);
+        formData.append("file", game.image);
         const response = await axios.post("api/upload", formData);
-        game.imagem = response.data.url;
+        game.image = response.data.url;
         console.log(game);
         await createGame(game);
       }
@@ -87,7 +94,14 @@ const DrawerFormGame = ({ idGame, isOpen, onClose }: Props) => {
             )}
             <InputField name="nome" label="Jogo" marginBottom={2} />
             <InputField name="data" label="Data de Lançamento" type="date" />
-            <InputField name="plataforma" label="plataforma" />
+            <InputField name="desenvolvedora" label="Desenvolvedora" />
+            <Text>Plataforma</Text>
+            <Select
+              isMulti
+              name="plataforma"
+              options={options}
+              onChange={handleChange}
+            />
             <InputFile name="image" />
           </Form>
         </DrawerBody>

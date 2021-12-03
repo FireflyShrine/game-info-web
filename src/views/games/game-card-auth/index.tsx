@@ -30,18 +30,32 @@ function GameCardAuth({ game, onEditClick, onDeleteClick }: GameCardProps) {
         roundedTop="md"
       />
       <Box p={3}>
-        <Heading fontSize={20}>{game.nome}</Heading>
-        <Text fontSize={14} mt={1}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dolor
-          esse eligendi, asperiores sequi molestias.
-        </Text>
+        <Heading fontSize={20} mb={1}>
+          {game.nome}
+        </Heading>
+
         <Box mt={3}>
-          <Text fontSize={14}>
-            Lançamento:{" "}
-            {game?.data &&
-              format(new Date(game.data), "dd/M/yyyy")}
+          <Text>
+            <strong>Desenvolvedora:</strong> {game?.desenvolvedora}
           </Text>
-          <Text fontSize={14}>Plataforma: PS4</Text>
+          <Text>
+            <strong> Lançamento:</strong>{" "}
+            {game.data && format(new Date(game.data), "dd/M/yyyy")}
+          </Text>
+          <strong> Plataformas:</strong>
+          <HStack>
+            {game.plataforma?.map((x) => (
+              <Text
+                backgroundColor="blue.300"
+                borderRadius="5px"
+                padding="1px 5px"
+                fontSize={12}
+                key={`plataforma-${x}`}
+              >
+                {x}
+              </Text>
+            ))}
+          </HStack>
         </Box>
         <HStack justifyContent="flex-end">
           <Tooltip hasArrow label="Editar game" placement="top">

@@ -71,7 +71,7 @@ const Games = () => {
           "repeat(4, 1fr)",
         ]}
         gap={5}
-        marginTop={10}
+        marginTop={5}
       >
         <LoadingCards isLoading={isLoading} height="80px" />
         {response?.map((game) => (

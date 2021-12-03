@@ -1,5 +1,5 @@
 import { Image } from "@chakra-ui/image";
-import { Box, Heading, Text } from "@chakra-ui/layout";
+import { Box, Heading, HStack, Text } from "@chakra-ui/layout";
 import { format } from "date-fns";
 import { IGames } from "../../api/games";
 
@@ -26,14 +26,28 @@ function GameCard({ game }: Props) {
       />
       <Box p={3}>
         <Heading fontSize={20}>{game.nome}</Heading>
-        <Text fontSize={14} mt={1}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla dolor
-          esse eligendi, asperiores sequi molestias.
-        </Text>
         <Box mt={3}>
-          <Text fontSize={14}>
-            Lançamento: {game?.data && format(new Date(game.data), "dd/M/yyyy")}
+          <Text>
+            <strong>Desenvolvedora:</strong> {game?.desenvolvedora}
           </Text>
+          <Text>
+            <strong> Lançamento:</strong>{" "}
+            {game?.data && format(new Date(game.data), "dd/M/yyyy")}
+          </Text>
+          <strong> Plataformas:</strong>
+          <HStack>
+            {game.plataforma?.map((x) => (
+              <Text
+                backgroundColor="blue.300"
+                borderRadius="5px"
+                padding="1px 5px"
+                fontSize={12}
+                key={`plataforma-${x}`}
+              >
+                {x}
+              </Text>
+            ))}
+          </HStack>
         </Box>
       </Box>
     </Box>
